@@ -73,75 +73,85 @@ int insert(struct vector* ptr)
 {
     static int count = 1;
     int ret = 0;
+    int flag = 0;
     char buf[80];
-    char* next;
-    long double first;
+    char* p1;
+    char* p2;
+    char* p3;
+    long double value_1;
+    long double value_2;
+    long double value_3;
 
     fprintf(stdout, "%i:>> ", count++);
     fgets(buf, 80, stdin);
 
+    //stop accepting vectors if the user enters "quit" or an empty line
     if((strcmp(buf,"\n")) != 0 && (strcmp(buf, "quit\n") != 0))
     {
+        //Check the array size and reallocate it with more space if necessary
         if(ptr->capacity == ptr->size)
         {
             ptr->capacity <<= 1;
             ptr->array = (struct element*) realloc(ptr->array, ptr->capacity * sizeof(struct element));
         }
-        first = strtold(buf, &next);
-        while(isblank(*next))
+        if(strchr(buf, ',') != NULL)
         {
-            ++next;
+            flag += 1;
+        }
+        if(strchr(buf, '@') != NULL)
+        {
+            flag += 2;
         }
 
-        if(*next == ',')
+        p1 = strtok(buf, ",@");
+        p2 = strtok(NULL, ",@");
+        p3 = strtok(NULL, ",@");
+
+        value_1 = strtold(p1, NULL);
+        value_2 = strtold(p2, NULL);
+        if(p3 != NULL)
         {
-            ++next;
-            ptr->array[ptr->size].x = first;
-            ptr->array[ptr->size].y = strtold(next, NULL);
-            ptr->array[ptr->size].mag = hypotl(first, ptr->array[ptr->size].y);
-            ptr->array[ptr->size].deg = atan2l(ptr->array[ptr->size].y, first) * 180.0 / M_PI;
+            value_3 = strtold(p3, NULL);
+        }
+
+        if(flag == 1)
+        {
+            ptr->array[ptr->size].x = value_1;
+            ptr->array[ptr->size].y = value_2;
+            ptr->array[ptr->size].mag = hypotl(ptr->array[ptr->size].x, ptr->array[ptr->size].y);
+            ptr->array[ptr->size].deg = atan2l(ptr->array[ptr->size].y, ptr->array[ptr->size].x) * 180.0 / M_PI;
+            if(ptr->array[ptr->size].deg < 0.0) //convert angles to 0/360 instead of +180/-180
+            {
+                ptr->array[ptr->size].deg += 360.0;
+            }
+        }
+        else if(flag == 2)
+        {
+            ptr->array[ptr->size].mag = value_1;
+            ptr->array[ptr->size].deg = value_2;
+            ptr->array[ptr->size].x = value_1 * cosl(value_2 * M_PI / 180);
+            ptr->array[ptr->size].y = value_1 * sinl(value_2 * M_PI / 180);
+        }
+        else if(flag == 3)
+        {
+            long double angle = atan2l(value_3, value_2);
+
+            ptr->array[ptr->size].mag = value_1;
+            ptr->array[ptr->size].deg = angle * 180/M_PI;
             if(ptr->array[ptr->size].deg < 0.0)
             {
                 ptr->array[ptr->size].deg += 360.0;
             }
-            ++(ptr->size);
-        }
-        else if(*next == '@')
-        {
-            ++next;
-            long double numerator;
-            long double angle = strtold(next, &next);
-
-            if(*next == ',')
-            {
-                ++next;
-                numerator = strtold(next, NULL);
-                angle = atan2l(numerator, angle);
-
-                ptr->array[ptr->size].x = first * cosl(angle);
-                ptr->array[ptr->size].y = first * sinl(angle);
-                ptr->array[ptr->size].deg = angle * 180/M_PI;
-                if(ptr->array[ptr->size].deg < 0.0)
-                {
-                    ptr->array[ptr->size].deg += 360.0;
-                }
-                ptr->array[ptr->size].mag = first;
-
-            }
-            else
-            {
-                ptr->array[ptr->size].x = first * cosl(angle * M_PI / 180.0);
-                ptr->array[ptr->size].y = first * sinl(angle * M_PI / 180.0);
-                ptr->array[ptr->size].deg = angle;
-                ptr->array[ptr->size].mag = first;
-            }
-            ++(ptr->size);
+            ptr->array[ptr->size].x = value_1 * cosl(angle);
+            ptr->array[ptr->size].y = value_1 * sinl(angle);
         }
         else
         {
             fprintf(stderr, "invalid input\n");
             exit(1);
         }
+
+        ++(ptr->size);
         ret = 1;
     }
     return ret;

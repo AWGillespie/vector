@@ -15,32 +15,32 @@
     vector [number]
 
 <H2>USAGE</H2>
-    The vector program interactivly accepts 2-dimensional vectors in one of<br>
-    several predefined formats (see FORMATS, below) and reprents them,<br>
-    displaying X and Y components, magnitude, and direction.  It also prints the<br>
-    sum of all provided vectors, with the same 4 data.  The program can process<br>
-    an arbitrary number of vectors, it will allocate more space as needed; if a<br>
-    number is provided on the commad line when calling the program, it will<br>
-    preallocate space for that many vectors, but will grow if necessary, if no<br>
+    The vector program interactivly accepts 2-dimensional vectors in one of
+    several predefined formats (see FORMATS, below) and reprents them,
+    displaying X and Y components, magnitude, and direction.  It also prints the
+    sum of all provided vectors, with the same 4 data.  The program can process
+    an arbitrary number of vectors, it will allocate more space as needed; if a
+    number is provided on the command line when calling the program, it will
+    preallocate space for that many vectors, but will grow if necessary, if no
     number is provided, it will default to 8.
 
 <H2>FORMATS</H2>
-    Each vector provided to the program must use one of the defined formats, but<br>
+    Each vector provided to the program must use one of the defined formats, but
     different formats may be freely intermixed across different vectors.<br>
 
-    format 1: &lt;X&gt;,&lt;Y&gt;<br>
+    format 1: &lt;X&gt;,&lt;Y&gt;
         X component and Y component, seperated by a comma.<br>
 
-    format 2: &lt;magnitude&gt;@&lt;direction&gt;<br>
-        Magnitude and direction, seperated by an at sign.  The direction is<br>
-        provided in degrees and proceeds counter-clockwise from positive X<br>
-        (e.g. the positive X-axis is 0&deg;, the positive Y-axis is 90&deg;,<br>
+    format 2: &lt;magnitude&gt;@&lt;direction&gt;
+        Magnitude and direction, seperated by an at sign.  The direction is
+        provided in degrees and proceeds counter-clockwise from positive X
+        (e.g. the positive X-axis is 0&deg;, the positive Y-axis is 90&deg;,
         the negative X-axis is 180&deg;, and the negative Y-axis is 270&deg;).<br>
 
-    format 3: &lt;magnitude&gt;@&lt;X&gt;,&lt;Y&gt;<br>
-        The magnitude of the vector, followed by the ratio of the X component to<br>
-        the Y component.  The X and Y provided need not produce the provided<br>
-        magnitude - the angle of the vector will be determined by their ratio.<br>
+    format 3: &lt;magnitude&gt;@&lt;X&gt;,&lt;Y&gt;
+        The magnitude of the vector, followed by the ratio of the X component to
+        the Y component.  The X and Y provided need not produce the provided
+        magnitude - the angle of the vector will be determined by their ratio.
 </pre>
 </BODY>
 
